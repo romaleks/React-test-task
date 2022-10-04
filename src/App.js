@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import uniqid from 'uniqid'
 import Overview from './components/Overview'
 
 class App extends Component {
@@ -6,7 +7,10 @@ class App extends Component {
     super()
 
     this.state = {
-      taskTitle: '',
+      taskTitle: {
+        text: '',
+        id: uniqid(),
+      },
       tasksArray: [],
     }
 
@@ -14,31 +18,40 @@ class App extends Component {
     this.addTask = this.addTask.bind(this)
   }
 
-  handleTaskChange(ev) {
+  handleTaskChange(e) {
     this.setState({
-      taskTitle: ev.target.value,
+      taskTitle: {
+        text: e.target.value,
+        id: this.state.taskTitle.id,
+      },
     })
   }
 
   addTask() {
     const task = this.state.taskTitle
-    if (!task) return
+    if (!task.text) return
     this.setState({
       tasksArray: [...this.state.tasksArray, task],
+      taskTitle: {
+        text: '',
+        id: uniqid(),
+      },
     })
   }
 
   render() {
+    const { taskTitle, tasksArray } = this.state
+
     return (
       <div className='App'>
         <input
           type='text'
           placeholder='Task Title'
-          value={this.state.taskTitle}
+          value={taskTitle.text}
           onChange={this.handleTaskChange}
         />
         <button onClick={this.addTask}>Submit</button>
-        <Overview tasks={this.state.tasksArray} />
+        <Overview tasks={tasksArray} />
       </div>
     )
   }
