@@ -16,6 +16,7 @@ class App extends Component {
 
     this.handleTaskChange = this.handleTaskChange.bind(this)
     this.addTask = this.addTask.bind(this)
+    this.removeTask = this.removeTask.bind(this)
   }
 
   handleTaskChange(e) {
@@ -39,6 +40,13 @@ class App extends Component {
     })
   }
 
+  removeTask(id) {
+    const newArray = this.state.tasksArray.filter(task => task.id !== id)
+    this.setState({
+      tasksArray: newArray,
+    })
+  }
+
   render() {
     const { taskTitle, tasksArray } = this.state
 
@@ -51,7 +59,7 @@ class App extends Component {
           onChange={this.handleTaskChange}
         />
         <button onClick={this.addTask}>Submit</button>
-        <Overview tasks={tasksArray} />
+        <Overview tasks={tasksArray} removeTask={this.removeTask} />
       </div>
     )
   }
